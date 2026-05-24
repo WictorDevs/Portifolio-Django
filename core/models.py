@@ -1,17 +1,29 @@
 from django.db import models
-
+from django.conf import settings
 
 
 class Pessoal(models.Model):
-    nome = models.CharField(max_length=150)
-    descricao = models.TextField()
-    curso = models.CharField(max_length=150)
+
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='perfil',
+        null=True,
+        blank=True,
+    )
+
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField(blank=True)
+    curso = models.CharField(max_length=200)
     periodo = models.CharField(max_length=50)
     email = models.EmailField()
-    git = models.URLField()
-    linked = models.URLField()
-    imagem_url = models.URLField(help_text="URL de uma imagem para o perfil")
+    git = models.URLField(blank=True)
+    linked = models.URLField(blank=True)
+    url_imagem = models.URLField(blank=True)
+
+    class Meta:
+        verbose_name = 'Perfil Pessoal'
+        verbose_name_plural = 'Perfis Pessoais'
 
     def __str__(self):
         return self.nome
-
